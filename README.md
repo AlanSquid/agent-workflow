@@ -16,7 +16,7 @@ Pocock skills 的紀律透過 `openspec/config.yaml` 的 `rules` 接進 `/opsx:p
 - `rules.proposal`：有會改變 specs 或拆法的未決事項時，依 `grilling` 的方式停下來問
 - `rules.tasks`：照 `to-tickets` 的切片方法寫 tasks.md（每個 task group 就是一張票，超過一組先確認），但不執行它的發布步驟
 
-`config.yaml` 只管 artifact 產生階段（proposal / specs / design / tasks），管不到 `/opsx:apply`；實作階段的 TDD 與 code review 由 `/implement`、`/tdd`、`/code-review` 負責。
+`config.yaml` 只管 artifact 產生階段（proposal / specs / design / tasks），管不到 `/opsx:apply`；實作階段的 TDD 與 code review 改由 `AGENTS.md` 的規則要求（AGENTS.md 每個 session 都會載入，對 `/opsx:apply` 一樣有效），實作時呼叫 `/tdd`、`/code-review`。
 
 ## 使用
 
@@ -48,8 +48,8 @@ npx skills@latest add AlanSquid/agent-workflow -s bootstrap-workflow -g -a claud
 | 規模 | 流程 |
 | --- | --- |
 | 小 | `/opsx:propose` → `/opsx:apply` → `/opsx:archive` |
-| 中 | `/grill-with-docs` → `/opsx:propose` → `/implement`（`/tdd`、`/code-review`）→ `/opsx:archive` |
-| 大 | `/grill-with-docs` → `/opsx:propose`（task group 即票）→ 每張票新 session `/implement` → `/opsx:archive` |
+| 中 | `/grill-with-docs` → `/opsx:propose` → `/opsx:apply`（依 AGENTS.md 用 `/tdd`、`/code-review`）→ `/opsx:archive` |
+| 大 | `/grill-with-docs` → `/opsx:propose`（task group 即票）→ 每張票新 session `/opsx:apply <change> 只做第 N 組` → `/opsx:archive` |
 
 完整規則由 `bootstrap-workflow` 寫進各專案的 `AGENTS.md`。
 
