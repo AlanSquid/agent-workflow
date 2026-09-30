@@ -13,6 +13,7 @@ rules:
   tasks:
     - 切 task group 時依 .agents/skills/to-tickets/SKILL.md 的「Draft vertical slices」方法（先做 prefactor、wide refactor 走 expand–contract、每組塞得進一個新的 context window），每個 task group 就是一張票；不執行它的「Publish」步驟：不寫 .scratch/、不發布到外部 tracker，只寫這份 tasks.md
     - 超過一個 task group 時，寫檔前先依 to-tickets 的「Quiz the user」把切法給使用者確認
+    - 每個 task group 列出要測試的接縫（公開介面），實作時的 tdd skill 只在這些接縫寫測試；接縫跟切法一起給使用者確認
     - 任務必須垂直切片：每個 task group 是一組可以由人驗收的完整行為，並寫出驗收用的指令
     - {{VERTICAL_SLICE_DEFINITION}}
     - 第一個 task group 必須是 walking skeleton：功能最窄但打通全部環節，並包含可執行的測試（含測試基礎設施本身）

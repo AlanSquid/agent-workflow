@@ -27,9 +27,13 @@ OpenSpec 是文件骨架（長期的「做什麼」）；`.agents/skills/` 裡�
   已經先跑過 `/grill-with-docs` 就不會重問
 - grill 完直接在同一個 session 接 `/opsx:propose`；本專案刻意不裝 `/to-spec`，spec 由 OpenSpec 負責。
   grilling 不取代 `/opsx:explore`，後者在 change 進行中當思考夥伴
-- **實作 OpenSpec change 的任務時**（不論用 `/opsx:apply` 或 `/implement`）：在事先約定的接縫用 `/tdd`；
-  每完成一個 task group，跑 `/code-review`（傳入 `openspec/changes/<change>/` 當 spec 來源），review 完再 commit。
-  `openspec/config.yaml` 的 rules 管不到 apply 階段，這條規則是實作紀律的唯一來源
+- **實作 OpenSpec change 的任務時**（不論用 `/opsx:apply` 或 `/implement`）。`openspec/config.yaml` 的 rules
+  管不到 apply 階段，這條規則是實作紀律的唯一來源：
+  - 寫新行為前用 Skill tool 載入 `tdd` skill，照它的紅綠循環做：先寫會因「行為不符」而失敗的測試並實際跑過、
+    確認紅燈，才寫實作；一次一個測試。接縫以 tasks.md 該組列出的為準，沒列到的新接縫先問使用者
+  - 每完成一項：在 tasks.md 打勾，測試全綠就 commit（一項一個 commit，不要整組最後一次打勾或 commit）
+  - 每完成一個 task group：用 `/code-review` 審查這組第一個 commit 以來的變更（包含這組對其他 repo 的
+    commit），傳入 `openspec/changes/<change>/` 當 spec 來源；review 的修正另外 commit
 - 實作預設用 `/opsx:apply`：它會自動讀 proposal、specs、design、tasks 並打勾。大型變更要講清楚只做哪一組，
   否則它會一路做完全部。`/implement` 也可以用，但要自己交代 change 路徑與打勾，例如：
   `/implement openspec/changes/<change> 第 1 組。完成一項就在 tasks.md 打勾。`
