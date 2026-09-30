@@ -1,6 +1,6 @@
 ---
 name: bootstrap-workflow
-description: Set up the OpenSpec × Matt Pocock skills hybrid workflow in the current repo — installs OpenSpec, the engineering skills and the os-tickets bridge, then tailors openspec/config.yaml and AGENTS.md to this project through a short interview. User-invoked.
+description: Set up the OpenSpec × Matt Pocock skills hybrid workflow in the current repo — installs OpenSpec and the engineering skills, then tailors openspec/config.yaml and AGENTS.md to this project through a short interview. User-invoked.
 disable-model-invocation: true
 ---
 
@@ -23,7 +23,7 @@ Run the script that ships with this skill (it is in `scripts/` next to this file
 bash <this-skill-dir>/scripts/bootstrap.sh
 ```
 
-Defaults: agents `claude-code,codex,pi`, os-tickets from `AlanSquid/agent-workflow`. Pass `--agents` if the user wants a different set. It installs OpenSpec (`openspec init`), the Pocock skills (without `to-spec`), the `os-tickets` bridge, and `docs/agents/{issue-tracker,domain}.md`. If a step fails, show the error and stop; don't improvise a workaround.
+Default agents: `claude-code,codex,pi`. Pass `--agents` if the user wants a different set. It installs OpenSpec (`openspec init`) and the Pocock skills (without `to-spec`), checks that the `to-tickets` sections referenced by the config template's `rules.tasks` still exist upstream, and copies `docs/agents/{issue-tracker,domain}.md`. If a step fails, show the error and stop; don't improvise a workaround.
 
 ## 3. Interview for the project-specific parts
 
@@ -41,7 +41,7 @@ Settle at least these:
 
 ## 4. Write the tailored files
 
-- **`openspec/config.yaml`**: start from `templates/openspec-config.yaml`. Fill `context` with the project summary, stack, where requirements live, and the key invariants; replace `{{VERTICAL_SLICE_DEFINITION}}` with this project's slice definition and example; replace `{{DOC_LANGUAGE}}`. Add project-specific rules under `rules` if the interview produced any. If a config already exists, merge: keep its entries and add what's missing.
+- **`openspec/config.yaml`**: start from `templates/openspec-config.yaml`. Fill `context` with the project summary, stack, where requirements live, and the key invariants; replace `{{VERTICAL_SLICE_DEFINITION}}` with this project's slice definition and example; replace `{{DOC_LANGUAGE}}`. Add project-specific rules under `rules` if the interview produced any. Keep the template's `rules.proposal` grilling gate and the two `rules.tasks` entries that reference `to-tickets`: they are how ticket slicing happens inside `/opsx:propose` (there is no separate ticketing skill). If a config already exists, merge: keep its entries and add what's missing.
 - **`AGENTS.md`**: a project section (language rule, what the project is, commands, hard rules; if requirements belong to someone else add the requirement-sovereignty rule — engineering decisions may be answered on the spot, business decisions become open questions with configurable behaviour, never invented) followed by the contents of `templates/AGENTS.workflow.md`. If `AGENTS.md` exists, add only the missing sections.
 - **`CLAUDE.md`**: must contain `@AGENTS.md`. Create it with just that line if absent; if present, add the import line without touching the rest.
 - Don't create `CONTEXT.md` or ADRs now — `/domain-modeling` creates them when terms and decisions actually settle.
@@ -49,7 +49,8 @@ Settle at least these:
 ## 5. Verify and report
 
 - `openspec validate --all` (or `openspec list` when there are no changes yet) runs without error.
-- Every entry in `.claude/skills/` resolves (no broken symlinks) and `skills-lock.json` lists `os-tickets`.
+- Every entry in `.claude/skills/` resolves (no broken symlinks) and `skills-lock.json` lists `grilling` and `to-tickets`.
+- `grep -n '{{' openspec/config.yaml` finds nothing (every template placeholder was replaced).
 - Show the user a short list of what was created or merged, and the next step: start the first change with `/grill-with-docs`, then `/opsx:propose` in the same session.
 
 Do not commit; leave that to the user.

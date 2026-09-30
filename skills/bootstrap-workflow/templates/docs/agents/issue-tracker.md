@@ -14,8 +14,12 @@ OpenSpec 管文件，工程 skills 把它們的紀律插進去（見 `AGENTS.md`
 
 ## skill 說「發布到 issue tracker」時
 
-透過 `/os-tickets` 橋接 skill 把 task group 寫進 `openspec/changes/<change>/tasks.md`。
-不要直接呼叫 `/to-tickets`，也不要發布到任何外部 tracker。change 還不存在時，先用 `/opsx:propose` 建立。
+票在 `/opsx:propose` 產生 tasks.md 時就切好了：`openspec/config.yaml` 的 `rules.tasks` 要求照 to-tickets
+的切片方法寫，但輸出只寫進 `openspec/changes/<change>/tasks.md`。不要直接呼叫 `/to-tickets`，也不要發布到
+任何外部 tracker。change 還不存在時，先用 `/opsx:propose` 建立。
+
+要重切既有 change 的票（例如 design 改了）：先跑 `openspec instructions tasks --change <change>` 取得同一套
+rules，照它重寫 tasks.md，已打勾的任務保留。
 
 ## skill 說「取得相關的票」時
 

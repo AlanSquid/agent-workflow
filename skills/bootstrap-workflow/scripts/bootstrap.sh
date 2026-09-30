@@ -10,11 +10,9 @@
 # 用法（在專案根目錄）：
 #   bash <skill-dir>/scripts/bootstrap.sh
 #   bash <skill-dir>/scripts/bootstrap.sh --agents claude-code,codex
-#   bash <skill-dir>/scripts/bootstrap.sh --source ~/projects/agent-workflow   # 用本地版本測試
 set -euo pipefail
 
 AGENTS="claude-code,codex,pi"
-SOURCE="AlanSquid/agent-workflow"
 SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TEMPLATES="$SKILL_DIR/templates"
 
@@ -34,8 +32,7 @@ POCOCK_SKILLS=(
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --agents) AGENTS="$2"; shift 2 ;;
-    --source) SOURCE="$2"; shift 2 ;;
-    -h|--help) sed -n '2,15p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,12p' "$0"; exit 0 ;;
     *) echo "未知參數：$1" >&2; exit 2 ;;
   esac
 done
@@ -82,10 +79,21 @@ log "2/4 Matt Pocock skills（${#POCOCK_SKILLS[@]} 個）"
 npx -y skills@latest add mattpocock/skills -s "${POCOCK_SKILLS[@]}" -a "${agent_list[@]}" -y
 done_ "${POCOCK_SKILLS[*]}"
 
-# ---- 3. os-tickets 橋接 skill ---------------------------------------------
-log "3/4 os-tickets（來源：$SOURCE）"
-npx -y skills@latest add "$SOURCE" -s os-tickets -a "${agent_list[@]}" -y
-done_ "os-tickets"
+# ---- 3. 檢查 openspec/config.yaml 引用的上游段落 --------------------------
+# rules.tasks 以段落標題引用 to-tickets（切片方法、確認、不發布）。上游改名時
+# rule 會無聲失效，所以在這裡擋下來。
+log "3/4 檢查 to-tickets 段落"
+to_tickets=".agents/skills/to-tickets/SKILL.md"
+missing=()
+for h in "Draft vertical slices" "Quiz the user" "Publish"; do
+  grep -qE "^#+ .*$h" "$to_tickets" || missing+=("$h")
+done
+if (( ${#missing[@]} )); then
+  echo "❌ $to_tickets 找不到段落：${missing[*]}" >&2
+  echo "   上游 to-tickets 改版了，請更新 templates/openspec-config.yaml 的 rules.tasks 後再執行。" >&2
+  exit 1
+fi
+done_ "to-tickets 段落都在"
 
 # ---- 4. 固定範本 ----------------------------------------------------------
 log "4/4 範本檔"
