@@ -72,7 +72,17 @@ npx skills@latest check       # 只檢查有沒有新版
 grep -E '^#+ .*(Draft vertical slices|Quiz the user|Publish)' .agents/skills/to-tickets/SKILL.md
 ```
 
-不要手動修改 `.agents/skills/` 裡的檔案，`update` 會直接覆蓋。要調整 skill 在本流程裡的行為：規劃階段（propose）改 `openspec/config.yaml` 的 `rules`，實作階段（apply）改 `AGENTS.md` 的規則。
+不要手動修改 `.agents/skills/` 裡的檔案，`update` 會直接覆蓋。要調整 skill 在本流程裡的行為：規劃階段（propose）改 `openspec/config.yaml` 的 `rules`，實作階段（apply）改 `AGENTS.md` 的規則，skill 找票與 spec 的方式改 `docs/agents/*.md`（上游預留的客製點，`code-review`、`to-tickets` 會讀，不能刪）。
+
+### 範本更新後同步既有專案
+
+`bootstrap.sh` 不覆蓋既有檔案，重跑不會更新已經建好的專案。範本改版後，把 `templates/` 裡這三份檔案的差異手動合併進專案（用 `git log -p -- skills/bootstrap-workflow/templates/` 看改了什麼）：
+
+| 範本 | 專案裡的位置 |
+| --- | --- |
+| `openspec-config.yaml` 的 `rules` | `openspec/config.yaml`（`context` 與專案自己的 rule 保留） |
+| `AGENTS.workflow.md` | `AGENTS.md` 的工作流程章節 |
+| `docs/agents/issue-tracker.md`、`domain.md` | `docs/agents/` |
 
 ### 從舊版（有 `os-tickets`）遷移
 
