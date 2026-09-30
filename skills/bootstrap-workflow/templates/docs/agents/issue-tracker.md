@@ -18,8 +18,8 @@ OpenSpec 管文件，工程 skills 把它們的紀律插進去（見 `AGENTS.md`
 的切片方法寫，但輸出只寫進 `openspec/changes/<change>/tasks.md`。不要直接呼叫 `/to-tickets`，也不要發布到
 任何外部 tracker。change 還不存在時，先用 `/opsx:propose` 建立。
 
-要重切既有 change 的票（例如 design 改了）：先跑 `openspec instructions tasks --change <change>` 取得同一套
-rules，照它重寫 tasks.md，已打勾的任務保留。
+要重切既有 change 的票（例如 design 改了）：用 `/opsx:update <change>`，說明改了什麼。它會連同其他 artifact
+一起對齊，逐份給使用者確認後才寫；大改 tasks.md 時會取得同一套 `rules.tasks`。已打勾的任務保留。
 
 ## skill 說「取得相關的票」時
 

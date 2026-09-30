@@ -32,6 +32,8 @@ npx skills@latest add AlanSquid/agent-workflow -s bootstrap-workflow -g -a claud
 
 `/opsx:*` 指令執行的是 PATH 上的 `openspec`，腳本則用 `npx @fission-ai/openspec@latest`。兩者版本要一致（例如 brew 的 1.3.1 不會把 `context` 注入 apply 階段，1.13 會）。
 
+OpenSpec 的全域 profile 決定每個專案會裝哪些 `/opsx:*` 指令，建議用 `core` preset（`openspec config profile core`），它會跟著上游的核心清單走。舊版留下的 `custom` 清單不會自動加入新的核心指令，例如本流程用來重切票的 `/opsx:update`。改完 profile 後，要在各專案跑 `openspec update` 才會生效。
+
 在新專案的根目錄（需為 git repo）執行：
 
 ```text

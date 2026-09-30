@@ -4,7 +4,8 @@
 `openspec/config.yaml`）管理變更。進行中的變更放在 `openspec/changes/<name>/`，完成後移到
 `openspec/changes/archive/`；已接受的 spec 放在 `openspec/specs/`。
 
-Slash commands：`/opsx:propose`、`/opsx:explore`、`/opsx:apply`、`/opsx:archive`。
+Slash commands：`/opsx:propose`、`/opsx:explore`、`/opsx:apply`、`/opsx:update`、`/opsx:sync`、`/opsx:archive`。
+`/opsx:update` 修改進行中 change 的 artifact 並讓它們彼此一致（不改程式碼）；`/opsx:sync` 在 archive 前先把 delta specs 併進主規格。
 
 ## 混合工作流程：OpenSpec × 工程 skills
 
@@ -22,7 +23,7 @@ OpenSpec 是文件骨架（長期的「做什麼」）；`.agents/skills/` 裡�
 
 - 拆票在 `/opsx:propose` 產生 tasks.md 時完成：`openspec/config.yaml` 的 `rules.tasks` 要求照 to-tickets
   的切片方法寫，並在超過一組時先請你確認切法。不要直接用 `/to-tickets`（它會發布到 `.scratch/` 或外部 tracker）。
-  要重切時見 `docs/agents/issue-tracker.md`
+  design 改了、要重切票時用 `/opsx:update`（見 `docs/agents/issue-tracker.md`）
 - proposal 階段若有會改變 specs 或拆法的未決事項，agent 會依 grilling 的方式停下來問（`rules.proposal`）；
   已經先跑過 `/grill-with-docs` 就不會重問
 - grill 完直接在同一個 session 接 `/opsx:propose`；本專案刻意不裝 `/to-spec`，spec 由 OpenSpec 負責。
