@@ -1,0 +1,19 @@
+schema: spec-driven
+
+# Injected into every artifact generation (proposal, specs, design, tasks).
+context: |
+  {{PROJECT_CONTEXT}}
+
+rules:
+  proposal:
+    - 列出 Non-goals，避免範圍蔓延
+  design:
+    - 跟既有行為不一致的地方要明確列出，並說明怎麼處理
+  tasks:
+    - 任務必須垂直切片：每個 task group 是一組可以由人驗收的完整行為，並寫出驗收用的指令
+    - {{VERTICAL_SLICE_DEFINITION}}
+    - 第一個 task group 必須是 walking skeleton：功能最窄但打通全部環節，並包含可執行的測試（含測試基礎設施本身）
+    - 每個 task group 都要標註 `Blocked by:`
+    - 碰到外部 API 的切片，先用 fake adapter 打通、以對方文件為契約，adapter 介面在第一個相關 group 定案，不打真 API
+    - 純基礎設施工作不硬套垂直切片，照工作本身的結構拆
+    - 內容以{{DOC_LANGUAGE}}撰寫；技術術語與識別字保留英文
