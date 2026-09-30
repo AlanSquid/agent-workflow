@@ -32,6 +32,9 @@ OpenSpec 是文件骨架（長期的「做什麼」）；`.agents/skills/` 裡�
   - 寫新行為前用 Skill tool 載入 `tdd` skill，照它的紅綠循環做：先寫會因「行為不符」而失敗的測試並實際跑過、
     確認紅燈，才寫實作；一次一個測試。接縫以 tasks.md 該組列出的為準，沒列到的新接縫先問使用者
   - 每完成一項：在 tasks.md 打勾，測試全綠就 commit（一項一個 commit，不要整組最後一次打勾或 commit）
+  - commit 訊息的標題結尾附上「（change: <change>，第 N 組）」，例如
+    `feat: default 設定逐筆相同（change: supertrend-backtest-parity，第 5 組）`。
+    不要寫成 `<change>#N`：GitHub 會把 `#N` 當成 issue 編號
   - 每完成一個 task group：用 `/code-review` 審查這組第一個 commit 以來的變更（包含這組對其他 repo 的
     commit），傳入 `openspec/changes/<change>/` 當 spec 來源；review 的修正另外 commit
 - 實作預設用 `/opsx:apply`：它會自動讀 proposal、specs、design、tasks 並打勾。大型變更要講清楚只做哪一組，

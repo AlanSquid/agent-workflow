@@ -25,6 +25,12 @@ rules，照它重寫 tasks.md，已打勾的任務保留。
 
 讀 `openspec/changes/<change>/tasks.md` 裡指定的 task group。使用者通常會給 change 名稱和組別編號。
 
+## commit 訊息裡的票號
+
+commit 訊息標題結尾的「（change: X，第 N 組）」就是票號，代表 `openspec/changes/X/tasks.md` 的第 N 組；
+對應的 spec 是同一個 change 資料夾裡的 proposal、specs、design。`/code-review` 從 commit 訊息找 spec 時照這個對應去讀。
+change 已經 archive 的話，到 `openspec/changes/archive/` 底下找名稱結尾是 X 的資料夾。
+
 ## 臨時工作檔
 
 不屬於任何 change 的工作檔（探索筆記、handoff 紀錄）放在 `.scratch/`，它不在追蹤系統裡，也不進 git。
