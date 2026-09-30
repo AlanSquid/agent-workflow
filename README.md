@@ -72,7 +72,7 @@ npx skills@latest check       # 只檢查有沒有新版
 grep -E '^#+ .*(Draft vertical slices|Quiz the user|Publish)' .agents/skills/to-tickets/SKILL.md
 ```
 
-不要手動修改 `.agents/skills/` 裡的檔案，`update` 會直接覆蓋。要調整 skill 在本流程裡的行為：規劃階段（propose）改 `openspec/config.yaml` 的 `rules`，實作階段（apply）改 `AGENTS.md` 的規則，skill 找票與 spec 的方式改 `docs/agents/*.md`（上游預留的客製點，`code-review`、`to-tickets` 會讀，不能刪）。
+不要手動修改 agent 設定目錄裡產生出來的檔案：Pocock skills 由 `npx skills update` 管理；`openspec-*` skill 與 `/opsx:*` 指令檔（`.agents/skills/`、`.claude/`、`.pi/` 底下都有）由 `openspec update` 管理。兩者更新時都會直接覆蓋。要調整 skill 在本流程裡的行為：規劃階段（propose）改 `openspec/config.yaml` 的 `rules`，實作階段（apply）改 `AGENTS.md` 的規則，skill 找票與 spec 的方式改 `docs/agents/*.md`（上游預留的客製點，`code-review`、`to-tickets` 會讀，不能刪）。
 
 ### 範本更新後同步既有專案
 

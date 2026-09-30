@@ -42,7 +42,12 @@ OpenSpec 是文件骨架（長期的「做什麼」）；`.agents/skills/` 裡�
   `/implement openspec/changes/<change> 第 1 組。完成一項就在 tasks.md 打勾。`
 - 呼叫 `/code-review` 時，把 change 的路徑（`openspec/changes/<change>/`）當作 spec 來源傳進去
 - `/domain-modeling` 的產出放在 `docs/agents/domain.md` 規定的固定位置（根目錄 `CONTEXT.md` 加上 `docs/adr/`）
-- 不要修改 `.agents/skills/` 裡的上游 skill（`npx skills update` 會直接覆蓋，不會合併）
+- 不要手動修改 agent 設定目錄裡產生出來的檔案，它們由兩個工具管理，更新時會直接覆蓋、不會合併：
+  - Pocock skills（`.agents/skills/` 裡、列在 `skills-lock.json` 的）：由 `npx skills update` 管理
+  - OpenSpec 產生的檔案（`.agents/skills/openspec-*`、`.claude/skills/openspec-*`、`.claude/commands/opsx/`、
+    `.pi/skills/openspec-*`、`.pi/prompts/opsx-*`）：由 `openspec update` 管理
+  - 要調整行為：規劃階段（propose）改 `openspec/config.yaml` 的 `rules`，實作階段（apply）改這份 AGENTS.md 的規則，
+    skill 找票與 spec 的方式改 `docs/agents/*.md`
 - Context 管理：規劃（grill → propose）在同一個 session 完成；每張票的實作
   各開新 session；規劃 session 接近約 120k tokens 時用 `/handoff`
 - 定期跑 `/improve-codebase-architecture`，把選定的項目經 `/grill-with-docs` → `/opsx:propose` 回到主流程
