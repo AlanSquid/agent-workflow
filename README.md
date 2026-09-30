@@ -19,7 +19,7 @@ Pocock skills 的紀律透過 `openspec/config.yaml` 的 `rules` 接進 `/opsx:p
 `config.yaml` 只管 artifact 產生階段（proposal / specs / design / tasks），管不到 `/opsx:apply`（`rules.apply` 會被忽略）。`/opsx:apply` 本身也不會 TDD：OpenSpec 只要求「要有測試」，不管先後。所以實作紀律寫在 `AGENTS.md`，它每個 session 都會載入，對 `/opsx:apply` 一樣有效：
 
 - 寫新行為前用 Skill tool 載入 `tdd` skill，照紅綠循環做，只在 tasks.md 列出的接縫寫測試
-- 每完成一項：打勾，測試全綠就 commit
+- 每完成一項：打勾，測試全綠就 commit；commit 標題結尾附上票號「（change: X，第 N 組）」，讓 `/code-review` 能從 commit 找回 spec
 - 每完成一個 task group：`/code-review` 審查這組第一個 commit 以來的變更（含其他 repo），修正另外 commit
 
 ## 使用
