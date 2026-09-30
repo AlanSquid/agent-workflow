@@ -20,3 +20,4 @@ rules:
     - 碰到外部 API 的切片，先用 fake adapter 打通、以對方文件為契約，adapter 介面在第一個相關 group 定案，不打真 API
     - 純基礎設施工作不硬套垂直切片，照工作本身的結構拆
     - 內容以{{DOC_LANGUAGE}}撰寫；技術術語與識別字保留英文
+    - Markdown 排版：標題、清單、code fence 前後空一行；code fence 標語言；不用粗體行當標題
