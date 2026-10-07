@@ -10,6 +10,8 @@ Sets up the hybrid workflow: **OpenSpec is the artifact skeleton (the long-term 
 
 Talk to the user in their language (default: Traditional Chinese). Files you write follow the documentation language settled in step 3.
 
+Everything you write is committed and shared with collaborators, so it must hold for anyone who clones the repo: no personal or machine-specific details (absolute paths, home directories, personal notes or vaults, private tools). Facts come from the repo and the interview, not from your own user-level instructions or memory.
+
 ## 1. Pre-flight
 
 - Confirm the working directory is the root of a git repo. If it is not a git repo, ask whether to run `git init` — don't do it silently.
@@ -32,7 +34,7 @@ First explore the repo yourself (manifest files, directory layout, README, test 
 Settle at least these:
 
 1. **What the project is**: one or two sentences, plus the tech stack (confirm what you found).
-2. **Source of truth for requirements**: where the requirements live (a doc, a client spec, the user's head) and **who owns them**. If they belong to a client or other party, the requirement-sovereignty rule applies (step 4).
+2. **Source of truth for requirements**: where the requirements live (a doc, a client spec, the user's head) and **who owns them**. If they live somewhere only the user can reach (personal notes, a local path), write only what a collaborator can act on (e.g. "client spec, kept outside the repo; ask the owner"), not the path. If they belong to a client or other party, the requirement-sovereignty rule applies (step 4).
 3. **What one vertical slice means here**: the thing a human can verify with one command. With a UI it is usually one user-facing feature through DB → backend → frontend; without one it is a behaviour you can check from the CLI or tests (e.g. "for config X the output matches the baseline"). Get a concrete example and its acceptance command.
 4. **External APIs** the slices will cross (brokers, vendors, payment…), so the fake-adapter rule has names in it.
 5. **Commands**: install, test (full and single file), lint/format, anything else a contributor must run before committing.
@@ -44,6 +46,7 @@ Settle at least these:
 - **`openspec/config.yaml`**: start from `templates/openspec-config.yaml`. Fill `context` with the project summary, stack, where requirements live, and the key invariants; replace `{{VERTICAL_SLICE_DEFINITION}}` with this project's slice definition and example; replace `{{DOC_LANGUAGE}}`. Add project-specific rules under `rules` if the interview produced any. Keep the template's `rules.proposal` grilling gate and the two `rules.tasks` entries that reference `to-tickets`: they are how ticket slicing happens inside `/opsx:propose` (there is no separate ticketing skill). If a config already exists, merge: keep its entries and add what's missing.
 - **`AGENTS.md`**: a project section (language rule, what the project is, commands, hard rules; if requirements belong to someone else add the requirement-sovereignty rule — engineering decisions may be answered on the spot, business decisions become open questions with configurable behaviour, never invented) followed by the contents of `templates/AGENTS.workflow.md`. If `AGENTS.md` exists, add only the missing sections.
 - **`CLAUDE.md`**: must contain `@AGENTS.md`. Create it with just that line if absent; if present, add the import line without touching the rest.
+- If the user wants personal pointers kept (their notes path, private tools), put them in `CLAUDE.local.md` and add it to `.gitignore`; never in the shared files above.
 - Don't create `CONTEXT.md` or ADRs now — `/domain-modeling` creates them when terms and decisions actually settle.
 
 ## 5. Verify and report
@@ -51,6 +54,7 @@ Settle at least these:
 - `openspec validate --all` (or `openspec list` when there are no changes yet) runs without error.
 - Every entry in `.claude/skills/` resolves (no broken symlinks) and `skills-lock.json` lists `grilling` and `to-tickets`.
 - `grep -n '{{' openspec/config.yaml` finds nothing (every template placeholder was replaced).
+- `grep -nE '(/home/|/Users/|/mnt/|[A-Z]:\\|~/)' openspec/config.yaml AGENTS.md CLAUDE.md docs/agents/*.md` finds no personal paths.
 - Show the user a short list of what was created or merged, and the next step: start the first change with `/grill-with-docs`, then `/opsx:propose` in the same session.
 
 Do not commit; leave that to the user.
